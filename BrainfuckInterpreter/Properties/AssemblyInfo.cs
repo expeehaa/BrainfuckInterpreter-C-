@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 // Attribute gesteuert. Ändern Sie diese Attributwerte, um die Informationen zu ändern,
 // die einer Assembly zugeordnet sind.
 [assembly: AssemblyTitle("BrainfuckInterpreter")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Interprete code written in Brainfuck language")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("expeehaa")]
 [assembly: AssemblyProduct("BrainfuckInterpreter")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
