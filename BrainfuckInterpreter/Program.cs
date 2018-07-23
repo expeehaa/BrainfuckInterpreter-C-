@@ -3,25 +3,20 @@ using System.IO;
 
 namespace BrainfuckInterpreter
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
-        {
-            new Program(args);
-        }
-
-        public Program(string[] args)
+        public static void Main(string[] args)
         {
             string filename = null;
-            string input = "";
-            if(args.Length >= 1)
+            var input = "";
+            if (args.Length >= 1)
             {
                 filename = args[0];
                 if (args.Length >= 2) input = args[1];
             }
-            var content = "";
+            string content;
 
-            if(filename == null)
+            if (filename == null)
             {
                 Console.WriteLine("As there is no file given, you can write your code here.\nPress 'Enter' to execute your code.");
                 content = Console.ReadLine();
@@ -29,14 +24,14 @@ namespace BrainfuckInterpreter
             else
             {
                 Console.WriteLine($"Reading code from {filename}...");
-                content = readFile(filename);
+                content = ReadFile(filename);
                 Console.WriteLine(content);
             }
-            Console.WriteLine(interpreteCode(content, input));
+            Console.WriteLine(InterpreteCode(content, input));
             Console.ReadLine();
         }
 
-        private string readFile(string filename)
+        private static string ReadFile(string filename)
         {
             var fileinfo = new FileInfo(filename);
             try
@@ -50,18 +45,18 @@ namespace BrainfuckInterpreter
             }
         }
 
-        private string interpreteCode(string code, string input)
+        private static string InterpreteCode(string code, string input)
         {
+            if (string.IsNullOrWhiteSpace(code)) return "";
+
             var position = 0;
             var memory = new short[0xFFFF];
             var pointer = 0;
             var inputPointer = 0;
             var output = "";
 
-            var bracketsOpen = 0;
-            var bracketsClosed = 0;
-
-            while(position < code.Length)
+            int bracketsOpen, bracketsClosed;
+            while (position < code.Length)
             {
                 switch (code[position])
                 {
@@ -93,13 +88,13 @@ namespace BrainfuckInterpreter
                         bracketsOpen = 1;
                         bracketsClosed = 0;
 
-                        while(loopEnd < code.Length && bracketsOpen != bracketsClosed)
+                        while(loopEnd <= code.Length && bracketsOpen != bracketsClosed)
                         {
                             if (code[loopEnd] == '[') bracketsOpen++;
                             else if (code[loopEnd] == ']') bracketsClosed++;
                             loopEnd++;
                         }
-                        if (loopEnd == code.Length)
+                        if (loopEnd > code.Length)
                         {
                             Console.WriteLine($"No end of loop found for loop start at {position}!");
                             return "";
