@@ -8,9 +8,9 @@ namespace BrainfuckInterpreter {
 		public static void Main(string[] args) {
 			var filename = args.FirstOrDefault();
 			var input = string.Join(" ", args.Skip(1).ToArray());
-			
+
 			var interpreter = new Interpreter(GetCode(filename), input);
-			
+
 			try {
 				Console.WriteLine(interpreter.Interpret());
 			} catch(SyntaxException e) {

@@ -7,8 +7,8 @@ using System.Linq;
 namespace BrainfuckInterpreter {
 	public class Interpreter {
 		public static Dictionary<char, ICommand> Commands { get; }
-		
-		static Interpreter(){
+
+		static Interpreter() {
 			var icommandType         = typeof(ICommand);
 			var commandAttributeType = typeof(CommandAttribute);
 
@@ -20,20 +20,20 @@ namespace BrainfuckInterpreter {
 				.SelectMany(s => s.Names.Select(n => (s.Command, Name: n)))
 				.ToDictionary(s => s.Name, s => s.Command);
 		}
-		
+
 		public InterpretationContext Context { get; }
 
 		public Interpreter(string code, string input) {
 			Context = new InterpretationContext(code, input);
 		}
 
-		public void CheckSyntax(){
+		public void CheckSyntax() {
 			foreach(var command in Commands.Values) {
 				command.CheckSyntax(Context.Code);
 			}
 		}
 
-		public bool HasCorrectSyntax(){
+		public bool HasCorrectSyntax() {
 			try {
 				CheckSyntax();
 				return true;
@@ -42,7 +42,7 @@ namespace BrainfuckInterpreter {
 			}
 		}
 
-		public string Interpret(){
+		public string Interpret() {
 			Context.Reset();
 			CheckSyntax();
 

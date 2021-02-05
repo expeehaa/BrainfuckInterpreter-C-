@@ -11,7 +11,7 @@
 			}
 		}
 
-		public void CheckSyntax(string code){
+		public void CheckSyntax(string code) {
 			// No syntax problems possible.
 		}
 	}
