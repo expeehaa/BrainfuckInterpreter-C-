@@ -10,10 +10,9 @@ namespace BrainfuckInterpreter {
 			string content;
 
 			if(filename == null) {
-				Console.WriteLine("As there is no file given, you can write your code here.\nPress 'Enter' to execute your code.");
+				Console.WriteLine("No file given, enter code and press Enter to execute.");
 				content = Console.ReadLine();
 			} else {
-				Console.WriteLine($"Reading code from {filename}...");
 				content = ReadFile(filename);
 				Console.WriteLine(content);
 			}
