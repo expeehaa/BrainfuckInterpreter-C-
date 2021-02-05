@@ -7,20 +7,20 @@ namespace BrainfuckInterpreter {
 		public static void Main(string[] args) {
 			var filename = args.FirstOrDefault();
 			var input = string.Join(" ", args.Skip(1).ToArray());
-			string content;
-
-			if(filename == null) {
-				Console.WriteLine("No file given, enter code and press Enter to execute.");
-				content = Console.ReadLine();
-			} else {
-				content = ReadFile(filename);
-				Console.WriteLine(content);
-			}
-
-			var interpreter = new Interpreter(content, input);
+			
+			var interpreter = new Interpreter(GetCode(filename), input);
 
 			Console.WriteLine(interpreter.Interpret());
 			Console.ReadLine();
+		}
+
+		private static string GetCode(string filename) {
+			if(filename == null) {
+				Console.WriteLine("No file given, enter code and press Enter to execute.");
+				return Console.ReadLine();
+			} else {
+				return ReadFile(filename);
+			}
 		}
 
 		private static string ReadFile(string filename) {
