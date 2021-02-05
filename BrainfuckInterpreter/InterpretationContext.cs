@@ -8,6 +8,8 @@
 		public int     InputPointer { get; set; }
 		public string  Output       { get; set; }
 
+		public char CurrentCommand => Code[Position];
+
 		public int BracketsOpen   { get; set; }
 		public int BracketsClosed { get; set; }
 
