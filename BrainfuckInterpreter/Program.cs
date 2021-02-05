@@ -28,9 +28,9 @@ namespace BrainfuckInterpreter {
 
 			try {
 				return fileinfo.OpenText().ReadToEnd();
-			} catch(Exception e) {
-				Console.WriteLine(e.Message);
-				return "";
+			} catch(Exception) {
+				Console.WriteLine($"Error opening file '{filename}'");
+				throw;
 			}
 		}
 	}
