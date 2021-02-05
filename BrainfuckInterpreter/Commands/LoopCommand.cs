@@ -1,5 +1,4 @@
 ﻿using BrainfuckInterpreter.Exceptions;
-using System;
 
 namespace BrainfuckInterpreter.Commands {
 	[Command('[', ']')]
@@ -20,9 +19,6 @@ namespace BrainfuckInterpreter.Commands {
 					loopEnd++;
 				}
 
-				if(loopEnd > context.Code.Length) {
-					throw new Exception($"No end of loop found for loop start at {context.Position}!");
-				}
 				if(context.Memory[context.Pointer] == 0) {
 					context.Position = loopEnd;
 				}
@@ -39,10 +35,6 @@ namespace BrainfuckInterpreter.Commands {
 					}
 
 					loopStart--;
-				}
-
-				if(loopStart < 0) {
-					throw new Exception($"No start of loop found for loop end at {context.Position}!");
 				}
 
 				if(context.Memory[context.Pointer] != 0) {
