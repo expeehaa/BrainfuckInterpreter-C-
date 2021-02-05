@@ -1,4 +1,5 @@
 ﻿using BrainfuckInterpreter.Commands;
+using BrainfuckInterpreter.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,10 +27,27 @@ namespace BrainfuckInterpreter {
 			Context = new InterpretationContext(code, input);
 		}
 
+		public void CheckSyntax(){
+			foreach(var command in Commands.Values) {
+				command.CheckSyntax(Context.Code);
+			}
+		}
+
+		public bool HasCorrectSyntax(){
+			try {
+				CheckSyntax();
+				return true;
+			} catch(SyntaxException) {
+				return false;
+			}
+		}
+
 		public string Interpret(){
 			Context.Reset();
 			
 			if(!string.IsNullOrWhiteSpace(Context.Code)) {
+				CheckSyntax();
+
 				while(Context.Position < Context.Code.Length) {
 					Commands[Context.CurrentCommand].Handle(Context);
 					

@@ -10,5 +10,9 @@
 				context.Pointer += context.CurrentCommand == '>' ? 1 : -1;
 			}
 		}
+
+		public void CheckSyntax(string code) {
+			// No syntax problems possible.
+		}
 	}
 }

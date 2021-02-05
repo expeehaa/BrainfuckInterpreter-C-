@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BrainfuckInterpreter.Exceptions;
+using System;
 using System.IO;
 using System.Linq;
 
@@ -9,8 +10,12 @@ namespace BrainfuckInterpreter {
 			var input = string.Join(" ", args.Skip(1).ToArray());
 			
 			var interpreter = new Interpreter(GetCode(filename), input);
-
-			Console.WriteLine(interpreter.Interpret());
+			
+			try {
+				Console.WriteLine(interpreter.Interpret());
+			} catch(SyntaxException e) {
+				Console.WriteLine($"The syntax of the given brainfuck code is incorrect.\n{e}");
+			}
 			Console.ReadLine();
 		}
 

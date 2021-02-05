@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BrainfuckInterpreter.Exceptions;
+using System;
 
 namespace BrainfuckInterpreter.Commands {
 	[Command('[', ']')]
@@ -47,6 +48,27 @@ namespace BrainfuckInterpreter.Commands {
 				if(context.Memory[context.Pointer] != 0) {
 					context.Position = loopStart;
 				}
+			}
+		}
+
+		public void CheckSyntax(string code) {
+			var bracketsOpened = 0;
+			var bracketsClosed = 0;
+
+			for(int i = 0; i < code.Length; i++) {
+				if(code[i] == '[') {
+					bracketsOpened++;
+				} else if(code[i] == ']') {
+					bracketsClosed++;
+				}
+
+				if(bracketsOpened < bracketsClosed) {
+					throw new EarlyClosedLoopSyntaxException(code, i);
+				}
+			}
+
+			if(bracketsOpened != bracketsClosed) {
+				throw new MissingClosedLoopSyntaxException(code);
 			}
 		}
 	}

@@ -5,5 +5,9 @@
 			context.Memory[context.Pointer] = (short)context.Input[context.InputPointer];
 			context.InputPointer++;
 		}
+
+		public void CheckSyntax(string code) {
+			// No syntax problems possible.
+		}
 	}
 }
