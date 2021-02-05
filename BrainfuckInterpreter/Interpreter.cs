@@ -2,93 +2,86 @@
 
 namespace BrainfuckInterpreter {
 	public class Interpreter {
-		public string Code  { get; }
-		public string Input { get; }
+		public InterpretationContext Context { get; }
 
 		public Interpreter(string code, string input) {
-			Code  = code;
-			Input = input;
+			Context = new InterpretationContext(code, input);
 		}
 
 		public string Interpret(){
-			if(!string.IsNullOrWhiteSpace(Code)) {
-				var position = 0;
-				var memory = new short[0xFFFF];
-				var pointer = 0;
-				var inputPointer = 0;
-				var output = "";
-
-				int bracketsOpen, bracketsClosed;
-				while(position < Code.Length) {
-					switch(Code[position]) {
+			Context.Reset();
+			
+			if(!string.IsNullOrWhiteSpace(Context.Code)) {
+				while(Context.Position < Context.Code.Length) {
+					switch(Context.Code[Context.Position]) {
 						case '+':
-							if(memory[pointer] >= short.MaxValue) memory[pointer] = 0;
-							else memory[pointer]++;
+							if(Context.Memory[Context.Pointer] >= short.MaxValue) Context.Memory[Context.Pointer] = 0;
+							else Context.Memory[Context.Pointer]++;
 							break;
 						case '-':
-							if(memory[pointer] <= 0) memory[pointer] = short.MaxValue;
-							else memory[pointer]--;
+							if(Context.Memory[Context.Pointer] <= 0) Context.Memory[Context.Pointer] = short.MaxValue;
+							else Context.Memory[Context.Pointer]--;
 							break;
 						case '>':
-							if(pointer >= 0xFFFF) pointer = 0;
-							else pointer++;
+							if(Context.Pointer >= 0xFFFF) Context.Pointer = 0;
+							else Context.Pointer++;
 							break;
 						case '<':
-							if(pointer <= 0) pointer = 0xFFFF - 1;
-							else pointer--;
+							if(Context.Pointer <= 0) Context.Pointer = 0xFFFF - 1;
+							else Context.Pointer--;
 							break;
 						case '.':
-							output += (char)memory[pointer];
+							Context.Output += (char)Context.Memory[Context.Pointer];
 							break;
 						case ',':
-							memory[pointer] = (short)Input[inputPointer];
-							inputPointer++;
+							Context.Memory[Context.Pointer] = (short)Context.Input[Context.InputPointer];
+							Context.InputPointer++;
 							break;
 						case '[':
-							var loopEnd = position + 1;
-							bracketsOpen = 1;
-							bracketsClosed = 0;
+							var loopEnd = Context.Position + 1;
+							Context.BracketsOpen = 1;
+							Context.BracketsClosed = 0;
 
-							while(loopEnd <= Code.Length && bracketsOpen != bracketsClosed) {
-								if(Code[loopEnd] == '[') {
-									bracketsOpen++;
-								} else if(Code[loopEnd] == ']') {
-									bracketsClosed++;
+							while(loopEnd <= Context.Code.Length && Context.BracketsOpen != Context.BracketsClosed) {
+								if(Context.Code[loopEnd] == '[') {
+									Context.BracketsOpen++;
+								} else if(Context.Code[loopEnd] == ']') {
+									Context.BracketsClosed++;
 								}
 
 								loopEnd++;
 							}
 
-							if(loopEnd > Code.Length) {
-								Console.WriteLine($"No end of loop found for loop start at {position}!");
+							if(loopEnd > Context.Code.Length) {
+								Console.WriteLine($"No end of loop found for loop start at {Context.Position}!");
 								return "";
 							}
-							if(memory[pointer] == 0) {
-								position = loopEnd;
+							if(Context.Memory[Context.Pointer] == 0) {
+								Context.Position = loopEnd;
 							}
 							break;
 						case ']':
-							var loopStart = position - 1;
-							bracketsOpen = 0;
-							bracketsClosed = 1;
+							var loopStart = Context.Position - 1;
+							Context.BracketsOpen = 0;
+							Context.BracketsClosed = 1;
 
-							while(loopStart >= 0 && bracketsOpen != bracketsClosed) {
-								if(Code[loopStart] == '[') {
-									bracketsOpen++;
-								} else if(Code[loopStart] == ']') {
-									bracketsClosed++;
+							while(loopStart >= 0 && Context.BracketsOpen != Context.BracketsClosed) {
+								if(Context.Code[loopStart] == '[') {
+									Context.BracketsOpen++;
+								} else if(Context.Code[loopStart] == ']') {
+									Context.BracketsClosed++;
 								}
 
 								loopStart--;
 							}
 
 							if(loopStart < 0) {
-								Console.WriteLine($"No start of loop found for loop end at {position}!");
+								Console.WriteLine($"No start of loop found for loop end at {Context.Position}!");
 								return "";
 							}
 
-							if(memory[pointer] != 0) {
-								position = loopStart;
+							if(Context.Memory[Context.Pointer] != 0) {
+								Context.Position = loopStart;
 							}
 
 							break;
@@ -96,10 +89,10 @@ namespace BrainfuckInterpreter {
 							break;
 					}
 
-					position++;
+					Context.Position++;
 				}
 
-				return output;
+				return Context.Output;
 			} else {
 				return "";
 			}
