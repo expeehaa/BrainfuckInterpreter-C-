@@ -44,20 +44,15 @@ namespace BrainfuckInterpreter {
 
 		public string Interpret(){
 			Context.Reset();
-			
-			if(!string.IsNullOrWhiteSpace(Context.Code)) {
-				CheckSyntax();
+			CheckSyntax();
 
-				while(Context.Position < Context.Code.Length) {
-					Commands[Context.CurrentCommand].Handle(Context);
-					
-					Context.Position++;
-				}
+			while(Context.Position < Context.Code.Length) {
+				Commands[Context.CurrentCommand].Handle(Context);
 
-				return Context.Output;
-			} else {
-				return "";
+				Context.Position++;
 			}
+
+			return Context.Output;
 		}
 	}
 }
