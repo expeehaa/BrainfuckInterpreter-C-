@@ -1,20 +1,13 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 
 namespace BrainfuckInterpreter {
 	public class Program {
 		public static void Main(string[] args) {
-			string filename = null;
-			var input = "";
+			var filename = args.FirstOrDefault();
+			var input = string.Join(" ", args.Skip(1).ToArray());
 			string content;
-
-			if(args.Length >= 1) {
-				filename = args[0];
-
-				if(args.Length >= 2) {
-					input = args[1];
-				}
-			}
 
 			if(filename == null) {
 				Console.WriteLine("As there is no file given, you can write your code here.\nPress 'Enter' to execute your code.");
