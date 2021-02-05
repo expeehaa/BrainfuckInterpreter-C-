@@ -10,9 +10,6 @@
 
 		public char CurrentCommand => Code[Position];
 
-		public int BracketsOpen   { get; set; }
-		public int BracketsClosed { get; set; }
-
 		public InterpretationContext(string code, string input) {
 			Code  = code;
 			Input = input;
@@ -26,9 +23,6 @@
 			Pointer      = 0;
 			InputPointer = 0;
 			Output       = "";
-
-			BracketsOpen   = 0;
-			BracketsClosed = 0;
 		}
 	}
 }

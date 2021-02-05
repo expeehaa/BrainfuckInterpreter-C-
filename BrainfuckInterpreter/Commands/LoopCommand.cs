@@ -4,16 +4,16 @@ namespace BrainfuckInterpreter.Commands {
 	[Command('[', ']')]
 	public class LoopCommand : ICommand {
 		public void Handle(InterpretationContext context) {
-			if(context.CurrentCommand == '['){
+			if(context.CurrentCommand == '[') {
 				var loopEnd = context.Position + 1;
-				context.BracketsOpen = 1;
-				context.BracketsClosed = 0;
+				var bracketsOpen = 1;
+				var bracketsClosed = 0;
 
-				while(loopEnd <= context.Code.Length && context.BracketsOpen != context.BracketsClosed) {
+				while(loopEnd <= context.Code.Length && bracketsOpen != bracketsClosed) {
 					if(context.Code[loopEnd] == '[') {
-						context.BracketsOpen++;
+						bracketsOpen++;
 					} else if(context.Code[loopEnd] == ']') {
-						context.BracketsClosed++;
+						bracketsClosed++;
 					}
 
 					loopEnd++;
@@ -25,16 +25,16 @@ namespace BrainfuckInterpreter.Commands {
 				if(context.Memory[context.Pointer] == 0) {
 					context.Position = loopEnd;
 				}
-			} else{
+			} else {
 				var loopStart = context.Position - 1;
-				context.BracketsOpen = 0;
-				context.BracketsClosed = 1;
+				var bracketsOpen = 0;
+				var bracketsClosed = 1;
 
-				while(loopStart >= 0 && context.BracketsOpen != context.BracketsClosed) {
+				while(loopStart >= 0 && bracketsOpen != bracketsClosed) {
 					if(context.Code[loopStart] == '[') {
-						context.BracketsOpen++;
+						bracketsOpen++;
 					} else if(context.Code[loopStart] == ']') {
-						context.BracketsClosed++;
+						bracketsClosed++;
 					}
 
 					loopStart--;
